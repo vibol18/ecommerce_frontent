@@ -2,9 +2,14 @@ import axios, { AxiosError, AxiosHeaders } from 'axios'
 import { useAuthStore } from '@/store/auth'
 import type { ApiResponse } from '@/types'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://laravel-ecommerce-lx44.onrender.com/api'
+
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  headers: { 'Content-Type': 'application/json' },
+  baseURL: API_BASE_URL,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
 })
 
 api.interceptors.request.use((config) => {
