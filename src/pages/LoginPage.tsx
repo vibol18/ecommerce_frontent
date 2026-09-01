@@ -47,12 +47,36 @@ export function LoginPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md">
-      <div className="rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
+    <div className="mx-auto grid max-w-4xl overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg md:grid-cols-2">
+      <div className="relative hidden flex-col justify-between bg-gradient-to-br from-indigo-600 to-purple-700 p-8 text-white md:flex">
+        <div
+          className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl"
+          aria-hidden="true"
+        />
+        <div className="relative">
+          <h2 className="text-2xl font-bold">Welcome back</h2>
+          <p className="mt-2 text-indigo-100">Sign in to continue shopping and manage your orders.</p>
+        </div>
+        <div className="relative space-y-3 text-sm text-indigo-100">
+          <p className="flex items-center gap-2">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-xs">✓</span>
+            Track your orders
+          </p>
+          <p className="flex items-center gap-2">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-xs">✓</span>
+            Sync your cart across devices
+          </p>
+          <p className="flex items-center gap-2">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-xs">✓</span>
+            Exclusive member deals
+          </p>
+        </div>
+      </div>
+      <div className="p-8">
         <h1 className="text-2xl font-bold text-gray-900">Sign in</h1>
         <p className="mt-1 text-sm text-gray-500">
           Don't have an account?{' '}
-          <Link to="/register" className="text-indigo-600 hover:underline">
+          <Link to="/register" className="font-medium text-indigo-600 hover:underline">
             Register
           </Link>
         </p>

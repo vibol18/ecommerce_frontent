@@ -59,11 +59,11 @@ export function RegisterPage() {
 
   return (
     <div className="mx-auto max-w-md">
-      <div className="rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
+      <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-lg">
         <h1 className="text-2xl font-bold text-gray-900">Create account</h1>
         <p className="mt-1 text-sm text-gray-500">
           Already have an account?{' '}
-          <Link to="/login" className="text-indigo-600 hover:underline">
+          <Link to="/login" className="font-medium text-indigo-600 hover:underline">
             Sign in
           </Link>
         </p>
