@@ -1,5 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/autoplay'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/effect-fade'
 import { useFeaturedProducts, useCategories } from '@/features/products/hooks'
 import { ProductCard } from '@/components/ProductCard'
 import { ProductGridSkeleton } from '@/components/ui/Skeleton'
@@ -68,17 +75,7 @@ export function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0)
 
   const products = featured.data ?? []
-  const [slide, setSlide] = useState(0)
-  const clampedSlide = products.length > 0 ? slide % products.length : 0
-
-  useEffect(() => {
-    if (products.length < 2) return
-    const id = setInterval(() => setSlide((s) => (s + 1) % products.length), 5000)
-    return () => clearInterval(id)
-  }, [products.length])
-
-  const next = () => setSlide((s) => (s + 1) % Math.max(products.length, 1))
-  const prev = () => setSlide((s) => (s - 1 + Math.max(products.length, 1)) % Math.max(products.length, 1))
+  const hasMultiple = products.length > 1
 
   const handleSubscribe = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -88,109 +85,87 @@ export function HomePage() {
 
   return (
     <div className="space-y-12 md:space-y-16">
-      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-rose-600 shadow-lg">
-        {products.length > 0 && (
-          <>
-            {products.map((product, i) => (
-              <div
-                key={product.id}
-                className={`relative flex min-h-[340px] flex-col overflow-hidden px-8 py-12 text-white transition-opacity duration-700 md:flex-row md:items-center md:gap-10 md:px-12 md:py-20 ${
-                  i === clampedSlide ? 'opacity-100' : 'pointer-events-none absolute inset-0 opacity-0'
-                }`}
-              >
-                <div
-                  className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
-                  aria-hidden="true"
-                />
-                <div
-                  className="pointer-events-none absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-rose-400/20 blur-3xl"
-                  aria-hidden="true"
-                />
-                <div className="relative flex-1">
-                  {product.category && (
-                    <p className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-sm font-medium uppercase tracking-wide backdrop-blur">
-                      {product.category.name}
-                    </p>
-                  )}
-                  <h1 className="mt-4 text-4xl font-extrabold leading-tight md:text-5xl">
-                    {product.name}
-                  </h1>
-                  <p className="mt-4 line-clamp-2 max-w-md text-lg text-orange-50 md:line-clamp-3">
-                    {product.description}
-                  </p>
-                  <div className="mt-4 flex items-baseline gap-3">
-                    <span className="text-3xl font-bold text-white">
-                      {formatCurrency(product.price)}
-                    </span>
-                    {product.compare_price && product.compare_price > product.price && (
-                      <span className="text-xl text-orange-200 line-through">
-                        {formatCurrency(product.compare_price)}
-                      </span>
+      <section className="hero-swiper-container relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-rose-600 shadow-lg">
+        {products.length > 0 ? (
+          <Swiper
+            className="hero-swiper"
+            modules={[Autoplay, EffectFade, Navigation, Pagination]}
+            effect="fade"
+            fadeEffect={{ crossFade: true }}
+            speed={700}
+            loop={hasMultiple}
+            autoplay={hasMultiple ? { delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true } : false}
+            navigation={hasMultiple}
+            pagination={{ clickable: true, dynamicBullets: false }}
+            slidesPerView={1}
+            spaceBetween={0}
+            touchRatio={1}
+            grabCursor
+            aria-label="Featured products carousel"
+          >
+            {products.map((product) => (
+              <SwiperSlide key={product.id} className="hero-swiper-slide !h-auto md:!h-full">
+                <div className="flex h-full min-h-[360px] flex-col px-8 py-12 text-white md:min-h-0 md:flex-row md:items-center md:gap-10 md:px-14 md:py-16">
+                  <div
+                    className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
+                    aria-hidden="true"
+                  />
+                  <div
+                    className="pointer-events-none absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-rose-400/20 blur-3xl"
+                    aria-hidden="true"
+                  />
+                  <div className="relative flex-1">
+                    {product.category && (
+                      <p className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-sm font-medium uppercase tracking-wide backdrop-blur">
+                        {product.category.name}
+                      </p>
                     )}
+                    <h1 className="mt-4 text-3xl font-extrabold leading-tight md:text-5xl">
+                      {product.name}
+                    </h1>
+                    <p className="mt-4 line-clamp-2 max-w-md text-base text-orange-50 md:line-clamp-3 md:text-lg">
+                      {product.description}
+                    </p>
+                    <div className="mt-4 flex flex-wrap items-baseline gap-3">
+                      <span className="text-2xl font-bold text-white md:text-3xl">
+                        {formatCurrency(product.price)}
+                      </span>
+                      {product.compare_price && product.compare_price > product.price && (
+                        <span className="text-lg text-orange-200 line-through md:text-xl">
+                          {formatCurrency(product.compare_price)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="mt-7 flex flex-wrap gap-3">
+                      <Link
+                        to={`/products/${product.slug}`}
+                        className="rounded-md bg-white px-6 py-3 font-semibold text-orange-700 shadow-md transition-transform hover:scale-[1.02] hover:bg-orange-50"
+                      >
+                        Shop Now
+                      </Link>
+                      <Link
+                        to="/products"
+                        className="rounded-md border border-white/40 px-6 py-3 font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
+                      >
+                        View All Products
+                      </Link>
+                    </div>
                   </div>
-                  <div className="mt-7 flex flex-wrap gap-3">
-                    <Link
-                      to={`/products/${product.slug}`}
-                      className="rounded-md bg-white px-6 py-3 font-semibold text-orange-700 shadow-md transition-transform hover:scale-[1.02] hover:bg-orange-50"
-                    >
-                      Shop Now
-                    </Link>
-                    <Link
-                      to="/products"
-                      className="rounded-md border border-white/40 px-6 py-3 font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
-                    >
-                      View All Products
-                    </Link>
-                  </div>
+                  {product.images[0] && (
+                    <div className="relative mt-8 shrink-0 md:mt-0 md:w-72">
+                      <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="h-56 w-full rounded-xl border-4 border-white/30 object-cover shadow-2xl md:h-64"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
                 </div>
-                {product.images[0] && (
-                  <div className="relative mt-8 shrink-0 md:mt-0 md:w-72">
-                    <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      className="h-56 w-full rounded-xl border-4 border-white/30 object-cover shadow-2xl md:h-64"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
-              </div>
+              </SwiperSlide>
             ))}
-
-            <button
-              onClick={prev}
-              aria-label="Previous slide"
-              className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 p-2 text-white backdrop-blur transition-colors hover:bg-white/40"
-            >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              onClick={next}
-              aria-label="Next slide"
-              className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 p-2 text-white backdrop-blur transition-colors hover:bg-white/40"
-            >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-
-            <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-              {products.map((product, i) => (
-                <button
-                  key={product.id}
-                  onClick={() => setSlide(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                  className={`h-2.5 rounded-full transition-all ${
-                    i === clampedSlide ? 'w-8 bg-white' : 'w-2.5 bg-white/50 hover:bg-white/70'
-                  }`}
-                />
-              ))}
-            </div>
-          </>
-        )}
-
-        {products.length === 0 && (
+          </Swiper>
+        ) : (
           <div className="relative px-8 py-16 text-white md:px-12 md:py-20">
             <div
               className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
