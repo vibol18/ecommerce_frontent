@@ -2,10 +2,9 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules'
+import { Autoplay, EffectFade, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/autoplay'
-import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-fade'
 import { useFeaturedProducts, useCategories } from '@/features/products/hooks'
@@ -152,13 +151,12 @@ export function HomePage() {
       <section className="hero-swiper-container relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-rose-600 shadow-lg">
         <Swiper
           className="hero-swiper"
-          modules={[Autoplay, EffectFade, Navigation, Pagination]}
+          modules={[Autoplay, EffectFade, Pagination]}
           effect="fade"
           fadeEffect={{ crossFade: true }}
           speed={700}
           loop={hasMultiple}
-          autoplay={hasMultiple ? { delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true } : false}
-          navigation={hasMultiple}
+          autoplay={hasMultiple ? { delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true } : false}
           pagination={{ clickable: true, dynamicBullets: false }}
           slidesPerView={1}
           spaceBetween={0}

@@ -79,42 +79,6 @@ a {
   }
 }
 
-/* Custom navigation arrows (desktop only) */
-.hero-swiper .swiper-button-prev,
-.hero-swiper .swiper-button-next {
-  width: 44px;
-  height: 44px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(6px);
-  color: #fff;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.hero-swiper .swiper-button-prev:hover,
-.hero-swiper .swiper-button-next:hover {
-  background: rgba(255, 255, 255, 0.45);
-}
-
-.hero-swiper .swiper-button-prev:active,
-.hero-swiper .swiper-button-next:active {
-  transform: scale(0.92);
-}
-
-.hero-swiper .swiper-button-prev::after,
-.hero-swiper .swiper-button-next::after {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-/* Hide arrows on mobile / small screens (gesture driven) */
-@media (max-width: 767px) {
-  .hero-swiper .swiper-button-prev,
-  .hero-swiper .swiper-button-next {
-    display: none;
-  }
-}
-
 /* Custom pagination dots */
 .hero-swiper .swiper-pagination {
   bottom: 16px;
