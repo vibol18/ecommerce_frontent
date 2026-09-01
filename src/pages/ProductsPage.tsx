@@ -52,49 +52,54 @@ export function ProductsPage() {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-[260px_1fr]">
-      <aside>
-        <ProductFilters filters={filters} onApply={applyFilters} />
-      </aside>
+    <div className="space-y-6">
+      <div className="rounded-xl bg-gradient-to-r from-orange-50 to-rose-50 px-6 py-6">
+        <h1 className="text-2xl font-bold text-gray-900">Products</h1>
+        <p className="mt-1 text-sm text-gray-500">
+          {data ? `${data.total} items available` : 'Browse our full catalog'}
+        </p>
+      </div>
 
-      <div>
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Products</h1>
-            {data && <span className="text-sm text-gray-500">{data.total} items available</span>}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-[260px_1fr]">
+        <aside>
+          <ProductFilters filters={filters} onApply={applyFilters} />
+        </aside>
+
+        <div>
+          <div className="mb-4 flex items-center justify-end">
+            {isFetching && !isLoading && (
+              <span className="inline-flex items-center gap-1.5 text-sm text-gray-400">
+                <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                Refreshing...
+              </span>
+            )}
           </div>
-          {isFetching && !isLoading && (
-            <span className="inline-flex items-center gap-1.5 text-sm text-gray-400">
-              <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
-              Refreshing...
-            </span>
+
+          {isLoading ? (
+            <ProductGridSkeleton />
+          ) : data && data.data.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {data.data.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+              <Pagination
+                currentPage={data.current_page}
+                lastPage={data.last_page}
+                onPageChange={handlePageChange}
+              />
+            </>
+          ) : (
+            <EmptyState
+              title="No products found"
+              description="Try adjusting your filters or search query."
+            />
           )}
         </div>
-
-        {isLoading ? (
-          <ProductGridSkeleton />
-        ) : data && data.data.length > 0 ? (
-          <>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {data.data.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-            <Pagination
-              currentPage={data.current_page}
-              lastPage={data.last_page}
-              onPageChange={handlePageChange}
-            />
-          </>
-        ) : (
-          <EmptyState
-            title="No products found"
-            description="Try adjusting your filters or search query."
-          />
-        )}
       </div>
     </div>
   )

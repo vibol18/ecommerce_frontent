@@ -86,7 +86,7 @@ export function Navbar() {
 
           {user ? (
             <div className="group relative flex items-center gap-2 rounded-md p-2 transition-colors hover:bg-gray-100">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-sm font-semibold text-white">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-rose-500 text-sm font-semibold text-white">
                 {user.name.charAt(0).toUpperCase()}
               </div>
               <div className="hidden text-sm lg:block">

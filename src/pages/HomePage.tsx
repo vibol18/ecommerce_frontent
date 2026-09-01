@@ -1,39 +1,103 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useFeaturedProducts, useCategories } from '@/features/products/hooks'
 import { ProductCard } from '@/components/ProductCard'
 import { ProductGridSkeleton } from '@/components/ui/Skeleton'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { Button } from '@/components/ui/Button'
+import toast from 'react-hot-toast'
+
+const promoCards = [
+  {
+    title: 'Free Shipping',
+    description: 'On all orders over $50. No minimums, no code needed.',
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M3 7h9v9H3zM12 13h5a3 3 0 013 3v1h-1M9 20a1.5 1.5 0 10 0-3 1.5 1.5 0 000 3zm9 0a1.5 1.5 0 10 0-3 1.5 1.5 0 000 3z"
+        />
+      </svg>
+    ),
+  },
+  {
+    title: 'Clearance Deals',
+    description: 'Up to 40% off select clearance items while stocks last.',
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8L12 2z" />
+      </svg>
+    ),
+  },
+  {
+    title: 'First Purchase',
+    description: 'Get 15% off your first order with code NEW15.',
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+  },
+]
+
+const faqs = [
+  {
+    q: 'How long does shipping take?',
+    a: 'Standard shipping typically arrives within 3–5 business days. Express options are available at checkout.',
+  },
+  {
+    q: 'What is your return policy?',
+    a: 'We offer a 30-day return window on most items in original condition. See our Returns page for full details.',
+  },
+  {
+    q: 'How do I track my order?',
+    a: 'Once your order ships, a tracking link will be emailed to you. You can also view order status from your account.',
+  },
+  {
+    q: 'Do you offer international shipping?',
+    a: 'Yes, we ship to select countries worldwide. Shipping rates are calculated at checkout.',
+  },
+]
 
 export function HomePage() {
   const featured = useFeaturedProducts()
-  const categories = useCategories()
+  const allCategories = useCategories()
+  const [openFaq, setOpenFaq] = useState<number | null>(0)
+
+  const handleSubscribe = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    toast.success('Thanks for subscribing!')
+    ;(e.currentTarget.elements.namedItem('email') as HTMLInputElement).value = ''
+  }
 
   return (
-    <div className="space-y-12">
-      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-600 to-purple-700 px-8 py-16 text-white shadow-lg md:px-12 md:py-20">
+    <div className="space-y-12 md:space-y-16">
+      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-rose-600 px-8 py-16 text-white shadow-lg md:px-12 md:py-20">
         <div
           className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
           aria-hidden="true"
         />
         <div
-          className="pointer-events-none absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-purple-400/20 blur-3xl"
+          className="pointer-events-none absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-rose-400/20 blur-3xl"
           aria-hidden="true"
         />
         <div className="relative max-w-xl">
-          <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-sm font-medium text-indigo-100 backdrop-blur">
+          <p className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-sm font-medium backdrop-blur">
             <span className="h-2 w-2 rounded-full bg-emerald-300" />
             Fresh deals every day
           </p>
           <h1 className="mt-4 text-4xl font-extrabold leading-tight md:text-5xl">
             Shop the Best Deals Online
           </h1>
-          <p className="mt-4 text-lg text-indigo-100">
+          <p className="mt-4 text-lg text-orange-50">
             Discover thousands of products at prices you'll love. Fast shipping and easy returns.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               to="/products"
-              className="rounded-md bg-white px-6 py-3 font-semibold text-indigo-700 shadow-md transition-transform hover:scale-[1.02] hover:bg-indigo-50"
+              className="rounded-md bg-white px-6 py-3 font-semibold text-orange-700 shadow-md transition-transform hover:scale-[1.02] hover:bg-orange-50"
             >
               Shop Now
             </Link>
@@ -50,23 +114,26 @@ export function HomePage() {
       <section>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-900">Shop by Category</h2>
+          <Link to="/products" className="text-sm font-medium text-orange-600 hover:text-orange-700">
+            View all
+          </Link>
         </div>
-        {categories.isLoading ? (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-16 animate-pulse rounded-lg bg-gray-200" />
+        {allCategories.isLoading ? (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-24 animate-pulse rounded-lg bg-gray-200" />
             ))}
           </div>
-        ) : categories.data && categories.data.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {categories.data.map((cat) => (
+        ) : allCategories.data && allCategories.data.length > 0 ? (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+            {allCategories.data.map((cat) => (
               <Link
                 key={cat.id}
                 to={`/categories/${cat.slug}`}
-                className="group rounded-lg border border-gray-200 bg-white p-5 text-center shadow-sm transition-all hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md"
+                className="group flex flex-col items-center rounded-xl border border-gray-200 bg-white p-5 text-center shadow-sm transition-all hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-md"
               >
-                <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 transition-colors group-hover:bg-indigo-600 group-hover:text-white">
-                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-orange-50 text-orange-600 transition-colors group-hover:bg-orange-500 group-hover:text-white">
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -75,7 +142,7 @@ export function HomePage() {
                     />
                   </svg>
                 </div>
-                <h3 className="font-semibold text-gray-900 transition-colors group-hover:text-indigo-600">
+                <h3 className="text-sm font-semibold text-gray-900 transition-colors group-hover:text-orange-600">
                   {cat.name}
                 </h3>
               </Link>
@@ -86,10 +153,30 @@ export function HomePage() {
         )}
       </section>
 
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {promoCards.map((card) => (
+          <div
+            key={card.title}
+            className="flex items-start gap-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
+          >
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-600">
+              {card.icon}
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900">{card.title}</h3>
+              <p className="mt-1 text-sm text-gray-500">{card.description}</p>
+            </div>
+          </div>
+        ))}
+      </section>
+
       <section>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900">Featured Products</h2>
-          <Link to="/products" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+        <div className="mb-5 flex items-end justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Featured Products</h2>
+            <p className="mt-1 text-sm text-gray-500">Handpicked items you'll love this week</p>
+          </div>
+          <Link to="/products" className="text-sm font-semibold text-orange-600 hover:text-orange-700">
             View all
           </Link>
         </div>
@@ -104,6 +191,53 @@ export function HomePage() {
         ) : (
           <EmptyState title="No featured products" />
         )}
+      </section>
+
+      <section>
+        <h2 className="mb-4 text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
+        <div className="divide-y divide-gray-200 overflow-hidden rounded-xl border border-gray-200 bg-white">
+          {faqs.map((faq, i) => (
+            <div key={i}>
+              <button
+                onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+              >
+                <span className="font-medium text-gray-900">{faq.q}</span>
+                <svg
+                  className={`h-5 w-5 shrink-0 text-orange-600 transition-transform ${openFaq === i ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {openFaq === i && <p className="px-5 pb-4 text-sm text-gray-600">{faq.a}</p>}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="rounded-2xl bg-gradient-to-r from-orange-600 to-rose-600 px-8 py-12 text-center text-white shadow-lg">
+        <h2 className="text-2xl font-bold md:text-3xl">Stay in the loop</h2>
+        <p className="mx-auto mt-2 max-w-md text-orange-50">
+          Subscribe to get early access to sales and new arrivals straight to your inbox.
+        </p>
+        <form
+          onSubmit={handleSubscribe}
+          className="mx-auto mt-6 flex max-w-md flex-col gap-3 sm:flex-row"
+        >
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="Enter your email"
+            className="w-full rounded-md border-0 px-4 py-3 text-sm text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-white"
+          />
+          <Button type="submit" className="bg-white !text-orange-700 hover:bg-orange-50" size="lg">
+            Subscribe
+          </Button>
+        </form>
       </section>
     </div>
   )
