@@ -22,6 +22,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 ::selection {
@@ -73,9 +74,15 @@ a {
   overflow: hidden;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .hero-swiper {
-    height: 460px;
+    height: 420px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-swiper {
+    height: 480px;
   }
 }
 

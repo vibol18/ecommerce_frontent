@@ -166,110 +166,110 @@ export function HomePage() {
         >
           {useProductSlides
             ? products.map((product) => (
-                <SwiperSlide key={`product-${product.id}`} className="hero-swiper-slide !h-auto md:!h-full">
-                  <div className="flex h-full min-h-[360px] flex-col px-8 py-12 text-white md:min-h-0 md:flex-row md:items-center md:gap-10 md:px-14 md:py-16">
-                    <div
-                      className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
-                      aria-hidden="true"
-                    />
-                    <div
-                      className="pointer-events-none absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-rose-400/20 blur-3xl"
-                      aria-hidden="true"
-                    />
-                    <div className="relative flex-1">
-                      {product.category && (
-                        <p className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-sm font-medium uppercase tracking-wide backdrop-blur">
-                          {product.category.name}
-                        </p>
-                      )}
-                      <h1 className="mt-4 text-3xl font-extrabold leading-tight md:text-5xl">
-                        {product.name}
-                      </h1>
-                      <p className="mt-4 line-clamp-2 max-w-md text-base text-orange-50 md:line-clamp-3 md:text-lg">
-                        {product.description}
+<SwiperSlide key={`product-${product.id}`} className="hero-swiper-slide !h-auto sm:!h-full">
+                <div className="flex h-full min-h-[340px] flex-col justify-center px-6 pb-16 pt-10 text-white sm:min-h-0 sm:flex-row sm:items-center sm:gap-8 sm:px-10 sm:py-14 md:gap-10 lg:px-14">
+                  <div
+                    className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
+                    aria-hidden="true"
+                  />
+                  <div
+                    className="pointer-events-none absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-rose-400/20 blur-3xl"
+                    aria-hidden="true"
+                  />
+                  <div className="relative flex-1">
+                    {product.category && (
+                      <p className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-medium uppercase tracking-wide backdrop-blur sm:text-sm">
+                        {product.category.name}
                       </p>
-                      <div className="mt-4 flex flex-wrap items-baseline gap-3">
-                        <span className="text-2xl font-bold text-white md:text-3xl">
-                          {formatCurrency(product.price)}
-                        </span>
-                        {product.compare_price && product.compare_price > product.price && (
-                          <span className="text-lg text-orange-200 line-through md:text-xl">
-                            {formatCurrency(product.compare_price)}
-                          </span>
-                        )}
-                      </div>
-                      <div className="mt-7 flex flex-wrap gap-3">
-                        <Link
-                          to={`/products/${product.slug}`}
-                          className="rounded-md bg-white px-6 py-3 font-semibold text-orange-700 shadow-md transition-transform hover:scale-[1.02] hover:bg-orange-50"
-                        >
-                          Shop Now
-                        </Link>
-                        <Link
-                          to="/products"
-                          className="rounded-md border border-white/40 px-6 py-3 font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
-                        >
-                          View All Products
-                        </Link>
-                      </div>
-                    </div>
-                    {product.images[0] && (
-                      <div className="relative mt-8 shrink-0 md:mt-0 md:w-72">
-                        <img
-                          src={product.images[0]}
-                          alt={product.name}
-                          className="h-56 w-full rounded-xl border-4 border-white/30 object-cover shadow-2xl md:h-64"
-                          loading="lazy"
-                        />
-                      </div>
                     )}
+                    <h1 className="mt-4 text-2xl font-extrabold leading-tight sm:text-3xl md:text-4xl lg:text-5xl">
+                      {product.name}
+                    </h1>
+                    <p className="mt-4 line-clamp-2 max-w-md text-sm text-orange-50 sm:text-base md:line-clamp-3 md:text-lg">
+                      {product.description}
+                    </p>
+                    <div className="mt-4 flex flex-wrap items-baseline gap-3">
+                      <span className="text-2xl font-bold text-white md:text-3xl">
+                        {formatCurrency(product.price)}
+                      </span>
+                      {product.compare_price && product.compare_price > product.price && (
+                        <span className="text-lg text-orange-200 line-through md:text-xl">
+                          {formatCurrency(product.compare_price)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="mt-6 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
+                      <Link
+                        to={`/products/${product.slug}`}
+                        className="w-full rounded-md bg-white px-6 py-3 text-center font-semibold text-orange-700 shadow-md transition-transform hover:scale-[1.02] hover:bg-orange-50 sm:w-auto"
+                      >
+                        Shop Now
+                      </Link>
+                      <Link
+                        to="/products"
+                        className="w-full rounded-md border border-white/40 px-6 py-3 text-center font-semibold text-white backdrop-blur transition-colors hover:bg-white/10 sm:w-auto"
+                      >
+                        View All Products
+                      </Link>
+                    </div>
                   </div>
-                </SwiperSlide>
+                  {product.images[0] && (
+                    <div className="relative mt-6 shrink-0 sm:mt-0 sm:w-56 md:w-64 lg:w-72">
+                      <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="h-44 w-full rounded-xl border-4 border-white/30 object-cover shadow-2xl sm:h-52 md:h-60 lg:h-64"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                </div>
+              </SwiperSlide>
               ))
             : staticBanners.map((banner) => (
-                <SwiperSlide key={`banner-${banner.id}`} className="hero-swiper-slide !h-auto md:!h-full">
-                  <div className="flex h-full min-h-[360px] flex-col px-8 py-12 text-white md:min-h-0 md:flex-row md:items-center md:gap-10 md:px-14 md:py-16">
-                    <div
-                      className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
-                      aria-hidden="true"
-                    />
-                    <div
-                      className="pointer-events-none absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-rose-400/20 blur-3xl"
-                      aria-hidden="true"
-                    />
-                    <div className="relative flex-1">
-                      <p className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-sm font-medium backdrop-blur">
-                        <span className="h-2 w-2 rounded-full bg-emerald-300" />
-                        {banner.eyebrow}
-                      </p>
-                      <h1 className="mt-4 text-3xl font-extrabold leading-tight md:text-5xl">
-                        {banner.title}
-                      </h1>
-                      <p className="mt-4 max-w-md text-base text-orange-50 md:text-lg">
-                        {banner.subtitle}
-                      </p>
-                      <div className="mt-7 flex flex-wrap gap-3">
-                        <Link
-                          to={banner.primary.to}
-                          className="rounded-md bg-white px-6 py-3 font-semibold text-orange-700 shadow-md transition-transform hover:scale-[1.02] hover:bg-orange-50"
-                        >
-                          {banner.primary.label}
-                        </Link>
-                        <Link
-                          to={banner.secondary.to}
-                          className="rounded-md border border-white/40 px-6 py-3 font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
-                        >
-                          {banner.secondary.label}
-                        </Link>
-                      </div>
-                    </div>
-                    <div className="relative mt-8 flex shrink-0 items-center justify-center md:mt-0 md:w-72 md:py-8">
-                      <div className="flex h-40 w-40 items-center justify-center rounded-3xl border-4 border-white/30 bg-white/15 text-white backdrop-blur-md md:h-56 md:w-56">
-                        {banner.icon}
-                      </div>
+<SwiperSlide key={`banner-${banner.id}`} className="hero-swiper-slide !h-auto sm:!h-full">
+                <div className="flex h-full min-h-[340px] flex-col justify-center px-6 pb-16 pt-10 text-white sm:min-h-0 sm:flex-row sm:items-center sm:gap-8 sm:px-10 sm:py-14 md:gap-10 lg:px-14">
+                  <div
+                    className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
+                    aria-hidden="true"
+                  />
+                  <div
+                    className="pointer-events-none absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-rose-400/20 blur-3xl"
+                    aria-hidden="true"
+                  />
+                  <div className="relative flex-1">
+                    <p className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-medium backdrop-blur sm:text-sm">
+                      <span className="h-2 w-2 rounded-full bg-emerald-300" />
+                      {banner.eyebrow}
+                    </p>
+                    <h1 className="mt-4 text-2xl font-extrabold leading-tight sm:text-3xl md:text-4xl lg:text-5xl">
+                      {banner.title}
+                    </h1>
+                    <p className="mt-4 line-clamp-2 max-w-md text-sm text-orange-50 sm:line-clamp-3 sm:text-base md:text-lg">
+                      {banner.subtitle}
+                    </p>
+                    <div className="mt-6 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
+                      <Link
+                        to={banner.primary.to}
+                        className="w-full rounded-md bg-white px-6 py-3 text-center font-semibold text-orange-700 shadow-md transition-transform hover:scale-[1.02] hover:bg-orange-50 sm:w-auto"
+                      >
+                        {banner.primary.label}
+                      </Link>
+                      <Link
+                        to={banner.secondary.to}
+                        className="w-full rounded-md border border-white/40 px-6 py-3 text-center font-semibold text-white backdrop-blur transition-colors hover:bg-white/10 sm:w-auto"
+                      >
+                        {banner.secondary.label}
+                      </Link>
                     </div>
                   </div>
-                </SwiperSlide>
+                  <div className="relative mt-6 flex shrink-0 items-center justify-center sm:mt-0 sm:w-56 md:w-64 lg:w-72">
+                    <div className="flex h-32 w-32 items-center justify-center rounded-3xl border-4 border-white/30 bg-white/15 text-white backdrop-blur-md sm:h-44 sm:w-44 md:h-52 md:w-52 lg:h-56 lg:w-56">
+                      {banner.icon}
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
               ))}
         </Swiper>
       </section>
