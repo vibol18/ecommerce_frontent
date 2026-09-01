@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules'
@@ -69,13 +70,76 @@ const faqs = [
   },
 ]
 
+interface StaticBanner {
+  id: string
+  eyebrow: string
+  title: string
+  subtitle: string
+  primary: { label: string; to: string }
+  secondary: { label: string; to: string }
+  icon: ReactNode
+}
+
+const staticBanners: StaticBanner[] = [
+  {
+    id: 'deal',
+    eyebrow: 'Fresh deals every day',
+    title: 'Shop the Best Deals Online',
+    subtitle: "Discover thousands of products at prices you'll love. Fast shipping and easy returns.",
+    primary: { label: 'Shop Now', to: '/products' },
+    secondary: { label: 'View Cart', to: '/cart' },
+    icon: (
+      <svg className="h-16 w-16 md:h-24 md:w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6a1 1 0 00.9 1.4h12.8M16 17h-6"
+        />
+      </svg>
+    ),
+  },
+  {
+    id: 'clearance',
+    eyebrow: 'Limited time offer',
+    title: 'Big Clearance Sale — Up to 40% Off',
+    subtitle: 'Score unbeatable prices on clearance favorites while stocks last.',
+    primary: { label: 'See Deals', to: '/products' },
+    secondary: { label: 'Browse All', to: '/products' },
+    icon: (
+      <svg className="h-16 w-16 md:h-24 md:w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8L12 2z" />
+      </svg>
+    ),
+  },
+  {
+    id: 'shipping',
+    eyebrow: 'Fast & free',
+    title: 'Free Shipping on Orders Over $50',
+    subtitle: 'Enjoy free standard shipping and easy returns on every qualifying order.',
+    primary: { label: 'Start Shopping', to: '/products' },
+    secondary: { label: 'View Cart', to: '/cart' },
+    icon: (
+      <svg className="h-16 w-16 md:h-24 md:w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M3 7h9v9H3zM12 13h5a3 3 0 013 3v1h-1M9 20a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm9 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"
+        />
+      </svg>
+    ),
+  },
+]
+
 export function HomePage() {
   const featured = useFeaturedProducts()
   const allCategories = useCategories()
   const [openFaq, setOpenFaq] = useState<number | null>(0)
 
   const products = featured.data ?? []
-  const hasMultiple = products.length > 1
+  const useProductSlides = products.length > 0
+  const hasMultiple = useProductSlides ? products.length > 1 : staticBanners.length > 1
 
   const handleSubscribe = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -86,119 +150,130 @@ export function HomePage() {
   return (
     <div className="space-y-12 md:space-y-16">
       <section className="hero-swiper-container relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-rose-600 shadow-lg">
-        {products.length > 0 ? (
-          <Swiper
-            className="hero-swiper"
-            modules={[Autoplay, EffectFade, Navigation, Pagination]}
-            effect="fade"
-            fadeEffect={{ crossFade: true }}
-            speed={700}
-            loop={hasMultiple}
-            autoplay={hasMultiple ? { delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true } : false}
-            navigation={hasMultiple}
-            pagination={{ clickable: true, dynamicBullets: false }}
-            slidesPerView={1}
-            spaceBetween={0}
-            touchRatio={1}
-            grabCursor
-            aria-label="Featured products carousel"
-          >
-            {products.map((product) => (
-              <SwiperSlide key={product.id} className="hero-swiper-slide !h-auto md:!h-full">
-                <div className="flex h-full min-h-[360px] flex-col px-8 py-12 text-white md:min-h-0 md:flex-row md:items-center md:gap-10 md:px-14 md:py-16">
-                  <div
-                    className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
-                    aria-hidden="true"
-                  />
-                  <div
-                    className="pointer-events-none absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-rose-400/20 blur-3xl"
-                    aria-hidden="true"
-                  />
-                  <div className="relative flex-1">
-                    {product.category && (
-                      <p className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-sm font-medium uppercase tracking-wide backdrop-blur">
-                        {product.category.name}
-                      </p>
-                    )}
-                    <h1 className="mt-4 text-3xl font-extrabold leading-tight md:text-5xl">
-                      {product.name}
-                    </h1>
-                    <p className="mt-4 line-clamp-2 max-w-md text-base text-orange-50 md:line-clamp-3 md:text-lg">
-                      {product.description}
-                    </p>
-                    <div className="mt-4 flex flex-wrap items-baseline gap-3">
-                      <span className="text-2xl font-bold text-white md:text-3xl">
-                        {formatCurrency(product.price)}
-                      </span>
-                      {product.compare_price && product.compare_price > product.price && (
-                        <span className="text-lg text-orange-200 line-through md:text-xl">
-                          {formatCurrency(product.compare_price)}
-                        </span>
+        <Swiper
+          className="hero-swiper"
+          modules={[Autoplay, EffectFade, Navigation, Pagination]}
+          effect="fade"
+          fadeEffect={{ crossFade: true }}
+          speed={700}
+          loop={hasMultiple}
+          autoplay={hasMultiple ? { delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true } : false}
+          navigation={hasMultiple}
+          pagination={{ clickable: true, dynamicBullets: false }}
+          slidesPerView={1}
+          spaceBetween={0}
+          touchRatio={1}
+          grabCursor
+          aria-label="Hero carousel"
+        >
+          {useProductSlides
+            ? products.map((product) => (
+                <SwiperSlide key={`product-${product.id}`} className="hero-swiper-slide !h-auto md:!h-full">
+                  <div className="flex h-full min-h-[360px] flex-col px-8 py-12 text-white md:min-h-0 md:flex-row md:items-center md:gap-10 md:px-14 md:py-16">
+                    <div
+                      className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
+                      aria-hidden="true"
+                    />
+                    <div
+                      className="pointer-events-none absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-rose-400/20 blur-3xl"
+                      aria-hidden="true"
+                    />
+                    <div className="relative flex-1">
+                      {product.category && (
+                        <p className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-sm font-medium uppercase tracking-wide backdrop-blur">
+                          {product.category.name}
+                        </p>
                       )}
+                      <h1 className="mt-4 text-3xl font-extrabold leading-tight md:text-5xl">
+                        {product.name}
+                      </h1>
+                      <p className="mt-4 line-clamp-2 max-w-md text-base text-orange-50 md:line-clamp-3 md:text-lg">
+                        {product.description}
+                      </p>
+                      <div className="mt-4 flex flex-wrap items-baseline gap-3">
+                        <span className="text-2xl font-bold text-white md:text-3xl">
+                          {formatCurrency(product.price)}
+                        </span>
+                        {product.compare_price && product.compare_price > product.price && (
+                          <span className="text-lg text-orange-200 line-through md:text-xl">
+                            {formatCurrency(product.compare_price)}
+                          </span>
+                        )}
+                      </div>
+                      <div className="mt-7 flex flex-wrap gap-3">
+                        <Link
+                          to={`/products/${product.slug}`}
+                          className="rounded-md bg-white px-6 py-3 font-semibold text-orange-700 shadow-md transition-transform hover:scale-[1.02] hover:bg-orange-50"
+                        >
+                          Shop Now
+                        </Link>
+                        <Link
+                          to="/products"
+                          className="rounded-md border border-white/40 px-6 py-3 font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
+                        >
+                          View All Products
+                        </Link>
+                      </div>
                     </div>
-                    <div className="mt-7 flex flex-wrap gap-3">
-                      <Link
-                        to={`/products/${product.slug}`}
-                        className="rounded-md bg-white px-6 py-3 font-semibold text-orange-700 shadow-md transition-transform hover:scale-[1.02] hover:bg-orange-50"
-                      >
-                        Shop Now
-                      </Link>
-                      <Link
-                        to="/products"
-                        className="rounded-md border border-white/40 px-6 py-3 font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
-                      >
-                        View All Products
-                      </Link>
+                    {product.images[0] && (
+                      <div className="relative mt-8 shrink-0 md:mt-0 md:w-72">
+                        <img
+                          src={product.images[0]}
+                          alt={product.name}
+                          className="h-56 w-full rounded-xl border-4 border-white/30 object-cover shadow-2xl md:h-64"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </SwiperSlide>
+              ))
+            : staticBanners.map((banner) => (
+                <SwiperSlide key={`banner-${banner.id}`} className="hero-swiper-slide !h-auto md:!h-full">
+                  <div className="flex h-full min-h-[360px] flex-col px-8 py-12 text-white md:min-h-0 md:flex-row md:items-center md:gap-10 md:px-14 md:py-16">
+                    <div
+                      className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
+                      aria-hidden="true"
+                    />
+                    <div
+                      className="pointer-events-none absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-rose-400/20 blur-3xl"
+                      aria-hidden="true"
+                    />
+                    <div className="relative flex-1">
+                      <p className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-sm font-medium backdrop-blur">
+                        <span className="h-2 w-2 rounded-full bg-emerald-300" />
+                        {banner.eyebrow}
+                      </p>
+                      <h1 className="mt-4 text-3xl font-extrabold leading-tight md:text-5xl">
+                        {banner.title}
+                      </h1>
+                      <p className="mt-4 max-w-md text-base text-orange-50 md:text-lg">
+                        {banner.subtitle}
+                      </p>
+                      <div className="mt-7 flex flex-wrap gap-3">
+                        <Link
+                          to={banner.primary.to}
+                          className="rounded-md bg-white px-6 py-3 font-semibold text-orange-700 shadow-md transition-transform hover:scale-[1.02] hover:bg-orange-50"
+                        >
+                          {banner.primary.label}
+                        </Link>
+                        <Link
+                          to={banner.secondary.to}
+                          className="rounded-md border border-white/40 px-6 py-3 font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
+                        >
+                          {banner.secondary.label}
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="relative mt-8 flex shrink-0 items-center justify-center md:mt-0 md:w-72 md:py-8">
+                      <div className="flex h-40 w-40 items-center justify-center rounded-3xl border-4 border-white/30 bg-white/15 text-white backdrop-blur-md md:h-56 md:w-56">
+                        {banner.icon}
+                      </div>
                     </div>
                   </div>
-                  {product.images[0] && (
-                    <div className="relative mt-8 shrink-0 md:mt-0 md:w-72">
-                      <img
-                        src={product.images[0]}
-                        alt={product.name}
-                        className="h-56 w-full rounded-xl border-4 border-white/30 object-cover shadow-2xl md:h-64"
-                        loading="lazy"
-                      />
-                    </div>
-                  )}
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        ) : (
-          <div className="relative px-8 py-16 text-white md:px-12 md:py-20">
-            <div
-              className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"
-              aria-hidden="true"
-            />
-            <div className="relative max-w-xl">
-              <p className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-sm font-medium backdrop-blur">
-                <span className="h-2 w-2 rounded-full bg-emerald-300" />
-                Fresh deals every day
-              </p>
-              <h1 className="mt-4 text-4xl font-extrabold leading-tight md:text-5xl">
-                Shop the Best Deals Online
-              </h1>
-              <p className="mt-4 text-lg text-orange-50">
-                Discover thousands of products at prices you'll love. Fast shipping and easy returns.
-              </p>
-              <div className="mt-7 flex flex-wrap gap-3">
-                <Link
-                  to="/products"
-                  className="rounded-md bg-white px-6 py-3 font-semibold text-orange-700 shadow-md transition-transform hover:scale-[1.02] hover:bg-orange-50"
-                >
-                  Shop Now
-                </Link>
-                <Link
-                  to="/cart"
-                  className="rounded-md border border-white/40 px-6 py-3 font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
-                >
-                  View Cart
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
+                </SwiperSlide>
+              ))}
+        </Swiper>
       </section>
 
       <section>
