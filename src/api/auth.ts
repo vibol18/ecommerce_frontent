@@ -11,6 +11,11 @@ export async function register(data: RegisterData): Promise<AuthResponse> {
   return unwrap<AuthResponse>(res)
 }
 
+export async function registerAdmin(data: RegisterData): Promise<AuthResponse> {
+  const res = await api.post('/register/admin-super', data)
+  return unwrap<AuthResponse>(res)
+}
+
 export async function logout(): Promise<void> {
   await api.post('/logout')
 }

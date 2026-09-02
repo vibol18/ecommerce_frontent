@@ -11,6 +11,7 @@ import { CartPage } from '@/pages/CartPage'
 import { CheckoutPage } from '@/pages/CheckoutPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { RegisterPage } from '@/pages/RegisterPage'
+import { AdminRegisterPage } from '@/pages/AdminRegisterPage'
 import { ProfilePage } from '@/pages/ProfilePage'
 import { OrdersPage } from '@/pages/OrdersPage'
 import { OrderDetailPage } from '@/pages/OrderDetailPage'
@@ -59,6 +60,7 @@ export default function App() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/register/admin-super" element={<AdminRegisterPage />} />
 
             <Route
               path="/checkout"

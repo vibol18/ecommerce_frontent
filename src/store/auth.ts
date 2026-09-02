@@ -12,6 +12,7 @@ interface AuthState {
   isLoading: boolean
   login: (credentials: LoginCredentials) => Promise<void>
   register: (data: RegisterData) => Promise<void>
+  registerAdmin: (data: RegisterData) => Promise<void>
   logout: () => Promise<void>
   fetchProfile: () => Promise<void>
 }
@@ -51,6 +52,22 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true })
         try {
           const { user, token } = await authApi.register(data)
+          set({
+            user,
+            token,
+            isAdmin: user.role === 'admin',
+            isLoading: false,
+          })
+        } catch (error) {
+          set({ isLoading: false })
+          throw error
+        }
+      },
+
+      registerAdmin: async (data) => {
+        set({ isLoading: true })
+        try {
+          const { user, token } = await authApi.registerAdmin(data)
           set({
             user,
             token,
