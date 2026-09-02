@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="md:col-span-1">
             <Link to="/" className="text-xl font-bold text-indigo-400">
-              Shop<span className="text-white">ora</span>
+              Bol<span className="text-white">Shop</span>
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-gray-400">
               A modern e-commerce store built with React, TypeScript, and Tailwind CSS.
@@ -102,7 +102,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-10 border-t border-gray-800 pt-6 text-center text-xs text-gray-500">
-          &copy; {year} Shopora. All rights reserved. Built with React &amp; Vite.
+          &copy; {year} BolShop. All rights reserved. Built with React &amp; Vite.
         </div>
       </div>
     </footer>

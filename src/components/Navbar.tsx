@@ -44,7 +44,7 @@ export function Navbar() {
             </svg>
           </button>
           <Link to="/" className="text-xl font-bold text-indigo-600" onClick={closeMobile}>
-            Shop<span className="text-gray-900">ora</span>
+            Bol<span className="text-gray-900">Shop</span>
           </Link>
         </div>
 
