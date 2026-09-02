@@ -11,8 +11,6 @@ ARG VITE_API_BASE_URL
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 
 RUN npm run build
-
-# ── Production stage ──────────────────────────────────────────────────────────
 FROM nginx:alpine
 RUN apk add --no-cache bash
 

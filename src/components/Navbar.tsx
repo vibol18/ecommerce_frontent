@@ -55,6 +55,9 @@ export function Navbar() {
           <NavLink to="/products" className={navLink}>
             Products
           </NavLink>
+          <NavLink to="/categories" className={navLink}>
+            Categories
+          </NavLink>
           {isAdmin && (
             <NavLink to="/admin" className={navLink}>
               Admin
