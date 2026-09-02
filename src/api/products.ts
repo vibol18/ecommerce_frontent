@@ -23,7 +23,7 @@ export async function getAdminProduct(slug: string): Promise<Product> {
 }
 
 export async function getFeaturedProducts(): Promise<Product[]> {
-  const res = await api.get('/products', { params: { featured: 1, per_page: 8 } })
+  const res = await api.get('/products', { params: { is_featured: 1, per_page: 8 } })
   return res.data.data as Product[]
 }
 
